@@ -3,7 +3,8 @@ function Ant (x, y, game, group, bodies) {
   this.y = y;
   this.facing = 'left';
   this.group = group;
-  this.carriedSeed = null;
+  this.carriedSeedBody = null;
+  this.GameScreen = game.state.states[game.state.current];
 
   this.sprite = game.add.sprite(x, y, 'ant');
   if(this.group){
@@ -17,6 +18,9 @@ function Ant (x, y, game, group, bodies) {
   
   //	Clear the shapes and load the 'contra2' polygon from the physicsData JSON file in the cache
   this.body = this.sprite.body;
+  this.body.clearShapes();
+  //this.body.mass = 30;
+  this.body.addCircle(100, 0, 0, 0);
   this.body.kinematic = true;
   bodies.push(this.body);
 
@@ -51,6 +55,25 @@ Ant.prototype.onContact = function(phaserBody, p2Body) {
         this.carriedSeedBody = phaserBody;
         this.carriedSeedBody.x = this.body.x;
         //this.carriedSeedBody.y = this.body.y + this.sprite.width;
+
       }
       
+  };
+
+Ant.prototype.dropSeed = function (){
+  if(this.carriedSeedBody){
+    this.carriedSeedBody.kinematic = false;
+    this.carriedSeedBody.velocity.x = 0;
+    this.carriedSeedBody.velocity.y = 2;
+    this.carriedSeedBody.fixedRotation = false;
+    this.GameScreen.addEntity(this.GameScreen.Flowers, this.carriedSeedBody.x, this.GameScreen.Flowers.spawnLines[0], null);
+    this.carriedSeedBody.sprite.destroy();
+    this.carriedSeedBody.destroy();
+    this.carriedSeedBody = null;
+
+
+    //this.carriedSeedBody.y = this.body.y + this.sprite.width;
   }
+};
+
+

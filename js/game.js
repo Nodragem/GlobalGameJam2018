@@ -4,7 +4,7 @@ var Game = {
     myVariable : 'p',
     Hives: [],
     Bees: [],
-    Flowers: {create: Flower, list:[], group:null, bodies:[]},
+    Flowers: {create: Flower, list:[], group:null, bodies:[], spawnLines: []},
     Ants: {create: Ant, list:[], group:null, bodies:[]},
     Seeds: {create: Seed, list:[], group:null, bodies:[]},
     BeePaths: [],
@@ -69,7 +69,10 @@ var Game = {
                     var object_type = tile.properties['type'];
                     switch(object_type) {
                         case 'flower':
-                            this.addEntity(this.Flowers, x*60, y*60, tile.properties['colour']);
+                            // FIXME: in Tiledmap, we could have an Object Layer with the Spwaning Lines
+                            this.Flowers.spawnLines.push(y*60); // HACK: we will get twice the same Spawning Line for now (and that's ok)
+                            // then we only need the x, and the spawningLines index
+                            this.addEntity(this.Flowers, x*60, this.Flowers.spawnLines[0], tile.properties['colour']);
                             break;
 
                         case 'hive':
@@ -111,6 +114,7 @@ var Game = {
 
     onBackgroundClick : function (layer, pointer) {
 
+        // Detect Click on the Flowers:
         var bodies = game.physics.p2.hitTest(pointer.position, this.Flowers.bodies);
         var is_flower = !(bodies.length === 0);
 
@@ -137,6 +141,19 @@ var Game = {
         if(this.activeBeePath != null) {
             this.activeBeePath.addPoint(pointer.worldX, pointer.worldY, false);
         }
+
+        // Detect click on the Ants:
+        var bodies = game.physics.p2.hitTest(pointer.position, this.Ants.bodies);
+        var is_ant = !(bodies.length === 0);
+        if (is_ant){
+            for (id in this.Ants.bodies) {
+                if (bodies[0].parent === this.Ants.bodies[id]) {
+                    bodyID = id;
+                    break;
+                }
+            }
+        }
+        this.Ants.list[id].dropSeed();
     },
 
 
