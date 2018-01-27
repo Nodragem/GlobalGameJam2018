@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.1.0" orientation="orthogonal" renderorder="right-down" width="32" height="15" tilewidth="60" tileheight="60" infinite="0" nextobjectid="1">
+ <properties>
+  <property name="ants" value="5"/>
+  <property name="bees_green" value="1"/>
+  <property name="bees_orange" value="4"/>
+  <property name="bees_purple" value="2"/>
+  <property name="bees_soldier" value="10"/>
+ </properties>
  <tileset firstgid="1" name="level-objects" tilewidth="60" tileheight="60" spacing="1" margin="1" tilecount="16" columns="4">
   <image source="tilemap.png" width="245" height="245"/>
   <tile id="0" type="flower">

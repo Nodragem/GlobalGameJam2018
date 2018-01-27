@@ -1,0 +1,11 @@
+{ 
+    
+    "flower_ph": [
+        
+        {
+            "density": 2, "friction": 0, "bounce": 0, "isSensor":true, 
+            "filter": { "categoryBits": 1, "maskBits": 65535 },
+            "shape": [   139, 119  ,  48, 115  ,  11, 61  ,  54, 15  ,  144, 14  ,  184, 67  ]
+        }
+    ]
+}

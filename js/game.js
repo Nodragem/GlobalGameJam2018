@@ -1,30 +1,59 @@
-var map;
-var layer;
 var Game = {
     // I played with the variables scopes:
     // these variables don't need to be exposed!
     myVariable : 'p',
     Hives: [],
     Bees: [],
-    Flowers: [],
+    Flowers: {list:[], group:null, bodies:[]},
+    BeePaths: [],
+    clickRate : 100,
+    nextClick : 0,
+    activeBeePath : null,
+    selectedAction : 'yellowBee', 
+    background: null,
+    Ants: [],
 
     preload : function() {
+        // Here we load all the needed resources for the level.
+        // In our case, that's just two squares - one for the snake body and one for the apple.
+        game.load.image('background', './assets/images/background.png');
+        //	Load our physics data exported from PhysicsEditor
+  	    game.load.physics('physicsData', 'assets/physics/flower_ph_collider.json');
         game.stage.backgroundColor = '#1f8ec1';
-        game.load.image('hive', './assets/images/hive_ph.png');
-        game.load.image('bee', './assets/images/bee_ph.png');
-        game.load.image('love_bee', './assets/images/love_bee_ph.png');
-        game.load.image('seed', './assets/images/seed_ph.png');
-        game.load.image('flower', './assets/images/flower_ph.png');
+        game.load.image('hive', '/assets/images/hive_ph.png');
+        game.load.image('bee', '/assets/images/bee_ph.png');
+        game.load.image('icon-bee-orange', '/assets/images/icon-bee-orange.png');
+        game.load.image('icon-bee-purple', '/assets/images/icon-bee-purple.png');
+        game.load.image('icon-bee-green', '/assets/images/icon-bee-green.png');
+        game.load.image('love_bee', '/assets/images/love_bee_ph.png');
+        game.load.image('seed', '/assets/images/seed_ph.png');
+        game.load.image('flower', '/assets/images/flower_ph.png');
         game.load.tilemap('level-1', '/assets/maps/level-1.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('tiles', 'assets/images/tilemap.png');
+        game.load.image('ant', 'assets/images/ant.png');
 
     },
 
     create : function() {
-        //this.Flowers.push(new Flower(20, 20));
-        //this.Bees.push(new Bee(200, 200));
-        //this.Hives.push(new Hive(500, 500));
+        //	Enable p2 physics for Click Detection:
+        game.physics.startSystem(Phaser.Physics.P2JS);
+        game.input.onDown.add(this.onScreenClick, this);
 
+        //  Moves the image anchor to the middle, so it centers inside the game properly
+        this.background = game.add.sprite(game.world.centerX, game.world.centerY, 'background');
+        this.background.anchor.set(0.5);    
+        //  Enables all kind of input actions on this this.background (click, etc)
+        this.background.inputEnabled = true;    
+        this.background.events.onInputUp.add(this.onBackgroundClick, this);
+
+        this.Flowers.group = game.add.group();
+        //this.Flowers.list.push(new Flower(20, 1080-300, game, this.Flowers.group, this.Flowers.bodies));
+        this.Bees.push(new Bee(200, 200));
+        this.Hives.push(new Hive(1920/2, 10));
+
+        this.BeePaths.push(new BeePath(this.Hives[0]))
+        this.activeBeePath = this.BeePaths[0];
+        this.activeBeePath.addBee(this.Bees[0]);
         map = game.add.tilemap('level-1');
         map.addTilesetImage('level-objects', 'tiles', 60, 60, 1, 1);
 
@@ -36,25 +65,73 @@ var Game = {
                     var object_type = tile.properties['type'];
                     switch(object_type) {
                         case 'flower':
-                            this.Flowers.push(new Flower(x*60,y*60));
-                        break;
+                            this.Flowers.list.push(new Flower(x*60,y*60, game, this.Flowers.group, this.Flowers.bodies));
+                            break;
                     }
                 }
             }
         }
 
+        var ant_count = map.properties['ants'],
+          game_ants = game.add.group();
+        for(var i=0;i<ant_count;i++) {
+            this.Ants.push(new Ant(Math.floor(Math.random()*1000),y_size - toolbarSize - 24, game_ants));
+        }
+
+        renderHUD(Game, map);
+
+
+
 
     },
 
     update: function() {
+        for(id in this.BeePaths){
+            path = this.BeePaths[id];
+            path.updatePositions();
+        }
+
+    },
+
+    onBackgroundClick : function (layer, pointer) {
+        if(this.activeBeePath != null)
+            this.activeBeePath.addPoint(pointer.worldX,pointer.worldY);
+        
+
+    },
+
+    onScreenClick : function (pointer) {
+        
+        //	Detect click on Flowers
+        var bodies = game.physics.p2.hitTest(pointer.position, this.Flowers.bodies);
+
+        if (bodies.length === 0) { console.log("You didn't click a Flower"); }
+        else
+        { 
+            // extract the ID:
+            var bodyID = null;        
+            for (id in this.Flowers.bodies){
+                if(bodies[0].parent === this.Flowers.bodies[id]){
+                    bodyID = id;
+                    break;
+                }
+            }
+            console.log("you click on Flowers: " + bodyID);
+            // Make the active Bee Path add a point and deactivated it
+            if(this.activeBeePath != null){     
+                this.activeBeePath.addPoint(pointer.worldX,pointer.worldY); 
+                this.activeBeePath.setReady(true);
+                this.activeBeePath = null;
+            }
+        }
 
     },
 
     endGame: function () {
-
-        // Change the state back to Game.
-        this.state.start('Game_Over');
-
+        
+                // Change the state back to Game.
+                this.state.start('Game_Over');
+        
     }
 
 };
