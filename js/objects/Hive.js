@@ -3,6 +3,6 @@ function Hive(x, y){
     this.y = y;
     this.life = 100;
 
-    this.sprite = game.add.sprite(x, y, 'hive');
+    //this.sprite = game.add.sprite(x, y, 'hive');
 }
 

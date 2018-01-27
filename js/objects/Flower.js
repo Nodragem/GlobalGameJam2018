@@ -6,18 +6,22 @@ function Flower(x, y, game, group, bodies) {
     this.group = group;
     this.GameScreen = game.state.states[game.state.current];
 
-    this.sprite = game.add.sprite(x, y, 'flower');
-    if(this.group){
-        this.group.add(this.sprite);
+    this.sprite = game.add.sprite(x, y, 'yellow-flower');
+    this.sprite_stem = game.add.sprite(x, y, 'yellow-flower');
+    this.sprite.anchor.setTo(0.5);
+    this.sprite_stem.anchor.setTo(0.5, 0);
+    this.sprite_stem.frame = 1;
+    if(group){
+        group.add(this.sprite_stem);
+        group.add(this.sprite);
     }
 
-    //	Enable the physics body on this sprite and turn on the visual debugger
-	game.physics.p2.enable(this.sprite, true);
-    
+	  game.physics.p2.enable(this.sprite);
+
     //	Clear the shapes and load the 'contra2' polygon from the physicsData JSON file in the cache
     this.body = this.sprite.body;
     this.body.clearShapes();
-    this.body.loadPolygon('physicsData', 'flower_ph');
+    this.body.loadPolygon('physicsData', 'yellow-flower');
     this.body.kinematic = true;
     bodies.push(this.body);
 }

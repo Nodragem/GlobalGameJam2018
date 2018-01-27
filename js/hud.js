@@ -32,7 +32,7 @@ function renderHUD(game, map) {
     var text = game.add.text(Math.floor(icon.x + icon.width / 2), y_pos + icon_size + y_icon_spacing + icon_size, '' + bee_count, {fill: '#ffffff'});
 
     icon.inputEnabled = true;
-    icon.events.onInputDown.add(bee_update, {'clicked_index': icon_index});
+    icon.events.onInputDown.add(bee_activated, {'clicked_index': icon_index, 'game': game});
     icon.events.onInputOver.add(icon_over, {'clicked_index': icon_index, 'icon': icon});
     icon.events.onInputOut.add(icon_out, {'clicked_index': icon_index, 'icon': icon});
 
@@ -45,7 +45,7 @@ function renderHUD(game, map) {
 
 
 }
-function bee_update() {
+function bee_activated() {
   var text = hud_icons[this.clicked_index]['text'],
   c = hud_icons[this.clicked_index]['bee_count'];
   if(c>0) {
@@ -53,6 +53,12 @@ function bee_update() {
     hud_icons[this.clicked_index]['bee_count'] = c;
     text.text = c;
   }
+
+  this.game.BeePaths = [];
+  this.game.Bees.push(new Bee(this.game.Hives[0].x, this.game.Hives[0].y));
+  this.game.BeePaths.push(new BeePath(this.game.Hives[0]))
+  this.game.activeBeePath = this.game.BeePaths[0];
+  this.game.activeBeePath.addBee(this.game.Bees[0]);
 }
 
 function icon_over(icon) {
