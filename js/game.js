@@ -4,14 +4,15 @@ var Game = {
     myVariable : 'p',
     Hives: [],
     Bees: [],
-    Flowers: {list:[], group:null, bodies:[]},
+    Flowers: {create: Flower, list:[], group:null, bodies:[]},
+    Ants: {create: Ant, list:[], group:null, bodies:[]},
+    Seeds: {create: Seed, list:[], group:null, bodies:[]},
     BeePaths: [],
     clickRate : 100,
     nextClick : 0,
     activeBeePath : null,
     selectedAction : 'yellowBee', 
     background: null,
-    Ants: [],
 
     preload : function() {
         // Here we load all the needed resources for the level.
@@ -36,15 +37,21 @@ var Game = {
     create : function() {
         //	Enable p2 physics for Click Detection:
         game.physics.startSystem(Phaser.Physics.P2JS);
+        game.physics.p2.gravity.y = 300;
+        game.physics.p2.restitution = 0.3;
         game.input.onDown.add(this.onScreenClick, this);
 
-        //  Moves the image anchor to the middle, so it centers inside the game properly
+        //  Background and Ground Colliders:
         this.background = game.add.sprite(game.world.centerX, 0, 'background');
-        this.background.anchor.setTo(0.5,0);
-
+        
         //  Enables all kind of input actions on this this.background (click, etc)
         this.background.inputEnabled = true;    
         this.background.events.onInputUp.add(this.onBackgroundClick, this);
+        game.physics.p2.enable(this.background, true);
+        this.background.body.clearShapes();
+        this.background.body.addRectangle(x_size, toolbarSize, 0, y_size-toolbarSize/2-60, 0);
+        this.background.body.kinematic = true;
+        this.background.anchor.setTo(0.5,0);
 
         this.Flowers.group = game.add.group();
         //this.Flowers.list.push(new Flower(20, 1080-300, game, this.Flowers.group, this.Flowers.bodies));
@@ -65,20 +72,24 @@ var Game = {
                     var object_type = tile.properties['type'];
                     switch(object_type) {
                         case 'flower':
-                            this.Flowers.list.push(new Flower(x*60,y*60, game, this.Flowers.group, this.Flowers.bodies));
+                            this.addEntity(this.Flowers, x*60, y*60);
                             break;
                     }
                 }
             }
         }
 
-        var ant_count = map.properties['ants'],
-          game_ants = game.add.group();
+        var ant_count = map.properties['ants'];
+        this.Ants.group = game.add.group();
+        this.Ants.group.add(game.add.sprite(x, y));
         for(var i=0;i<ant_count;i++) {
-            this.Ants.push(new Ant(Math.floor(Math.random()*1000),y_size - toolbarSize - 24, game_ants));
+            var x = Math.floor(Math.random()*1000);
+            var y = y_size - toolbarSize - 24;
+            this.addEntity(this.Ants, x, y);
         }
 
         renderHUD(Game, map);
+        this.Flowers.list[0].spawnSeed();
 
 
 
@@ -91,7 +102,13 @@ var Game = {
             path.updatePositions();
         }
 
+        for(id in this.Ants.list) {
+            this.Ants.list[id].update();
+        }
+
     },
+
+
 
     onBackgroundClick : function (layer, pointer) {
         if(this.activeBeePath != null)
@@ -100,8 +117,7 @@ var Game = {
 
     },
 
-    onScreenClick : function (pointer) {
-        
+    onScreenClick : function (pointer) {        
         //	Detect click on Flowers
         var bodies = game.physics.p2.hitTest(pointer.position, this.Flowers.bodies);
 
@@ -132,6 +148,11 @@ var Game = {
                 // Change the state back to Game.
                 this.state.start('Game_Over');
         
+    },
+
+    addEntity: function (gameGroup, x, y) {
+        var object = new gameGroup.create(x,y, game, gameGroup.group, gameGroup.bodies);
+        gameGroup.list.push(object);
     }
 
 };
