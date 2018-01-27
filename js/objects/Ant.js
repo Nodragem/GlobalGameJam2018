@@ -3,6 +3,7 @@ function Ant (x, y, game, group, bodies) {
   this.y = y;
   this.facing = 'left';
   this.group = group;
+  this.carriedSeed = null;
 
   this.sprite = game.add.sprite(x, y, 'ant');
   if(this.group){
@@ -26,6 +27,7 @@ function Ant (x, y, game, group, bodies) {
 };
 
 Ant.prototype.update = function(){
+
   this.body.x+= this.move_speed;
   if (this.body.x > x_size){
     this.body.x = 0;
@@ -33,12 +35,22 @@ Ant.prototype.update = function(){
   if (this.body.x < 0){
     this.body.x = x_size;
   }
+
+  if(this.carriedSeedBody){
+    this.carriedSeedBody.x = this.body.x + this.sprite.width/2;
+  }
 };
 
-Ant.prototype.onContact = function(sprite1, sprite2) {
+Ant.prototype.onContact = function(phaserBody, p2Body) {
   
-      console.log('hit:');
-      console.log(sprite1);
-      console.log(sprite2);
+      if(phaserBody.sprite.key == 'seed'){
+        phaserBody.kinematic = true;
+        phaserBody.velocity.x = 0;
+        phaserBody.velocity.y = 0;
+        phaserBody.fixedRotation = true;
+        this.carriedSeedBody = phaserBody;
+        this.carriedSeedBody.x = this.body.x;
+        //this.carriedSeedBody.y = this.body.y + this.sprite.width;
+      }
       
   }
