@@ -84,7 +84,7 @@ var Game = {
         this.Ants.group.add(game.add.sprite(x, y));
         for(var i=0;i<ant_count;i++) {
             var x = Math.floor(Math.random()*1000);
-            var y = y_size - toolbarSize - 24;
+            var y = y_size - toolbarSize - 60;
             this.addEntity(this.Ants, x, y);
         }
 

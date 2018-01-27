@@ -27,6 +27,12 @@ function Ant (x, y, game, group, bodies) {
 
 Ant.prototype.update = function(){
   this.body.x+= this.move_speed;
+  if (this.body.x > x_size){
+    this.body.x = 0;
+  }
+  if (this.body.x < 0){
+    this.body.x = x_size;
+  }
 };
 
 Ant.prototype.onContact = function(sprite1, sprite2) {
