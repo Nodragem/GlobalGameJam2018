@@ -19,7 +19,6 @@ var Game = {
         game.load.image('background', './assets/images/background.png');
         //	Load our physics data exported from PhysicsEditor
   	    game.load.physics('physicsData', 'assets/physics/flower_ph_collider.json');
-        game.stage.backgroundColor = '#1f8ec1';
         game.load.image('hive', '/assets/images/hive_ph.png');
         game.load.image('bee', '/assets/images/bee_ph.png');
         game.load.image('icon-bee-orange', '/assets/images/icon-bee-orange.png');
@@ -40,8 +39,9 @@ var Game = {
         game.input.onDown.add(this.onScreenClick, this);
 
         //  Moves the image anchor to the middle, so it centers inside the game properly
-        this.background = game.add.sprite(game.world.centerX, game.world.centerY, 'background');
-        this.background.anchor.set(0.5);    
+        this.background = game.add.sprite(game.world.centerX, 0, 'background');
+        this.background.anchor.setTo(0.5,0);
+
         //  Enables all kind of input actions on this this.background (click, etc)
         this.background.inputEnabled = true;    
         this.background.events.onInputUp.add(this.onBackgroundClick, this);
