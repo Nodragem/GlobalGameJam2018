@@ -13,7 +13,7 @@
 var express = require('express');
 var app =  express();
 var server = require('http').Server(app);
-var io = require('socket.io').listen(server);
+//var io = require('socket.io').listen(server);
 var PORT = process.env.PORT || 5000;
 
 app.use('/js', express.static(__dirname + '/js'));
@@ -27,10 +27,10 @@ server.listen(PORT, function(){ // Listens to port 8081
 });
 
 // Here we could subscribe the server to different Client side events:
-io.on('connection', (socket) => function(socket){
-    console.log('Client '+ socket.id +' just connect to Server.');
-}
-);
+// io.on('connection', (socket) => function(socket){
+//     console.log('Client '+ socket.id +' just connect to Server.');
+// }
+// );
 
 
 

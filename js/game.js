@@ -17,9 +17,9 @@ var Game = {
     },
 
     create : function() {
-        Flowers.add(new Flower(20, 20));
-        Bees.add(new Bee(200, 200));
-        Hives.add(new Hive(500, 500));
+        this.Flowers.push(new Flower(20, 20));
+        this.Bees.push(new Bee(200, 200));
+        this.Hives.push(new Hive(500, 500));
     },
 
     update: function() {
