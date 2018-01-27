@@ -25,6 +25,15 @@ function Flower(x, y, game, group, bodies, type) {
     this.body.loadPolygon('physicsData', 'yellow-flower');
     this.body.kinematic = true;
     bodies.push(this.body);
+
+    // add a particle effect when a flower is made:
+    emitter = game.add.emitter(this.x, this.y+this.sprite.height-60, 20); 
+    emitter.forEach(function(particle) { particle.tint = 0x00ff00;});
+    emitter.minParticleScale = 0.1;
+    emitter.maxParticleScale = 0.5;   
+    emitter.makeParticles('seed');
+    emitter.gravity = 200;
+    emitter.start(true, 2000, null, 10);
 }
 
 Flower.prototype.spawnSeed = function(){

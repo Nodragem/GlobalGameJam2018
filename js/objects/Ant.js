@@ -27,17 +27,21 @@ function Ant (x, y, game, group, bodies) {
   //  Check for the ant hitting another object
   this.body.onBeginContact.add(this.onContact, this);
 
-
+  
 };
 
 Ant.prototype.update = function(){
 
   this.body.x+= this.move_speed;
   if (this.body.x > x_size){
-    this.body.x = 0;
+    this.move_speed *= -1;
+    this.sprite.scale.x = -1;
+    // this.body.x = 0;
   }
   if (this.body.x < 0){
-    this.body.x = x_size;
+    this.move_speed *= -1;
+    this.sprite.scale.x = 1;
+    // this.body.x = x_size;
   }
 
   if(this.carriedSeedBody){
