@@ -29,8 +29,11 @@ var Game = {
         game.load.image('seed', '/assets/images/seed_ph.png');
         game.load.image('flower', '/assets/images/flower_ph.png');
         game.load.tilemap('level-1', '/assets/maps/level-1.json', null, Phaser.Tilemap.TILED_JSON);
-        game.load.image('tiles', 'assets/images/tilemap.png');
+        game.load.image('tiles', 'assets/images/blank.png');
         game.load.image('ant', 'assets/images/ant.png');
+
+        game.load.spritesheet('yellow-flower', 'assets/images/yellow-flower.png', 120, 120);
+
 
     },
 
@@ -43,7 +46,7 @@ var Game = {
 
         //  Background and Ground Colliders:
         this.background = game.add.sprite(game.world.centerX, 0, 'background');
-        
+
         //  Enables all kind of input actions on this this.background (click, etc)
         this.background.inputEnabled = true;    
         this.background.events.onInputUp.add(this.onBackgroundClick, this);
@@ -55,12 +58,7 @@ var Game = {
 
         this.Flowers.group = game.add.group();
         //this.Flowers.list.push(new Flower(20, 1080-300, game, this.Flowers.group, this.Flowers.bodies));
-        this.Bees.push(new Bee(200, 200));
-        this.Hives.push(new Hive(1920/2, 10));
 
-        this.BeePaths.push(new BeePath(this.Hives[0]))
-        this.activeBeePath = this.BeePaths[0];
-        this.activeBeePath.addBee(this.Bees[0]);
         map = game.add.tilemap('level-1');
         map.addTilesetImage('level-objects', 'tiles', 60, 60, 1, 1);
 
@@ -73,6 +71,11 @@ var Game = {
                     switch(object_type) {
                         case 'flower':
                             this.addEntity(this.Flowers, x*60, y*60);
+                            break;
+
+                        case 'hive':
+                            this.Hives.push(new Hive(x*60,y*60));
+
                             break;
                     }
                 }
@@ -117,7 +120,7 @@ var Game = {
 
     },
 
-    onScreenClick : function (pointer) {        
+    onScreenClick : function (pointer) {
         //	Detect click on Flowers
         var bodies = game.physics.p2.hitTest(pointer.position, this.Flowers.bodies);
 

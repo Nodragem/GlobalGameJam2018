@@ -3,9 +3,9 @@ function BeePath (origin) {
     this.points = [];
     // this.points.push({x:origin.x, y:origin.y});
     this.points.push({x:origin.x, y:origin.y, sprite:game.add.sprite(origin.x, origin.y, 'love_bee')});
-    this.noise_amp = 4;
+    this.noise_amp = 5;
     this.bees = [];
-    this.speed_bees = 30; //pixels per seconds
+    this.speed_bees = 10; //pixels per seconds
     this.ready_to_go = false;
     this.looping = false;
 
@@ -74,8 +74,8 @@ BeePath.prototype.updatePositions = function(){
         }
 
         // add noise in bees:
-        bee.sprite.x += 20 * game.rnd.realInRange(-1, 1);
-        bee.sprite.y += 20* game.rnd.realInRange(-1, 1);
+        bee.sprite.x += this.noise_amp * game.rnd.realInRange(-1, 1);
+        bee.sprite.y += this.noise_amp * game.rnd.realInRange(-1, 1);
     }
 
 };
