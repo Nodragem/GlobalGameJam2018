@@ -1,4 +1,4 @@
-function Flower(x, y, game, group, bodies) {
+function Flower(x, y, game, group, bodies, type) {
     this.x = x;
     this.y = y;
     this.pollen = 100;
@@ -11,6 +11,7 @@ function Flower(x, y, game, group, bodies) {
     this.sprite.anchor.setTo(0.5);
     this.sprite_stem.anchor.setTo(0.5, 0);
     this.sprite_stem.frame = 1;
+    this.flower_type = type;
     if(group){
         group.add(this.sprite_stem);
         group.add(this.sprite);

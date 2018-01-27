@@ -8,6 +8,7 @@ function BeePath (origin) {
     this.speed_bees = 10; //pixels per seconds
     this.ready_to_go = false;
     this.looping = false;
+    this.flower_points = [];
 
     
 };
@@ -18,7 +19,7 @@ BeePath.prototype.addBee = function(bee){
     this.bees.push(bee);
 };
 
-BeePath.prototype.addPoint = function(x, y){
+BeePath.prototype.addPoint = function(x, y, is_paused){
     var point = {x:x, y:y};
     point.sprite = game.add.sprite(point.x, point.y, 'love_bee');
     this.points.push(point);

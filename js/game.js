@@ -42,7 +42,6 @@ var Game = {
         game.physics.startSystem(Phaser.Physics.P2JS);
         game.physics.p2.gravity.y = 300;
         game.physics.p2.restitution = 0.3;
-        game.input.onDown.add(this.onScreenClick, this);
 
         //  Background and Ground Colliders:
         this.background = game.add.sprite(game.world.centerX, 0, 'background');
@@ -70,12 +69,11 @@ var Game = {
                     var object_type = tile.properties['type'];
                     switch(object_type) {
                         case 'flower':
-                            this.addEntity(this.Flowers, x*60, y*60);
+                            this.addEntity(this.Flowers, x*60, y*60, tile.properties['colour']);
                             break;
 
                         case 'hive':
                             this.Hives.push(new Hive(x*60,y*60));
-
                             break;
                     }
                 }
@@ -111,40 +109,36 @@ var Game = {
 
     },
 
-
-
     onBackgroundClick : function (layer, pointer) {
-        if(this.activeBeePath != null)
-            this.activeBeePath.addPoint(pointer.worldX,pointer.worldY);
-        
 
-    },
-
-    onScreenClick : function (pointer) {
-        //	Detect click on Flowers
         var bodies = game.physics.p2.hitTest(pointer.position, this.Flowers.bodies);
+        var is_flower = !(bodies.length === 0);
 
-        if (bodies.length === 0) { console.log("You didn't click a Flower"); }
-        else
-        { 
-            // extract the ID:
-            var bodyID = null;        
-            for (id in this.Flowers.bodies){
-                if(bodies[0].parent === this.Flowers.bodies[id]){
-                    bodyID = id;
-                    break;
+        if(is_flower) {
+            flower_hits++;
+            if (flower_hits == 2) {
+                // extract the ID:
+                var bodyID = null;
+                for (id in this.Flowers.bodies) {
+                    if (bodies[0].parent === this.Flowers.bodies[id]) {
+                        bodyID = id;
+                        break;
+                    }
+                }
+                // Make the active Bee Path add a point and deactivated it
+                if (this.activeBeePath != null) {
+                    this.activeBeePath.addPoint(pointer.worldX, pointer.worldY, true);
+                    this.activeBeePath.setReady(true);
+                    this.activeBeePath = null;
+                    flower_hits = 0;
                 }
             }
-            console.log("you click on Flowers: " + bodyID);
-            // Make the active Bee Path add a point and deactivated it
-            if(this.activeBeePath != null){     
-                this.activeBeePath.addPoint(pointer.worldX,pointer.worldY); 
-                this.activeBeePath.setReady(true);
-                this.activeBeePath = null;
-            }
         }
-
+        if(this.activeBeePath != null) {
+            this.activeBeePath.addPoint(pointer.worldX, pointer.worldY, false);
+        }
     },
+
 
     endGame: function () {
         
@@ -153,9 +147,11 @@ var Game = {
         
     },
 
-    addEntity: function (gameGroup, x, y) {
-        var object = new gameGroup.create(x,y, game, gameGroup.group, gameGroup.bodies);
+    addEntity: function (gameGroup, x, y, params) {
+        var object = new gameGroup.create(x,y, game, gameGroup.group, gameGroup.bodies, params);
         gameGroup.list.push(object);
     }
 
 };
+
+var flower_hits = 0;
