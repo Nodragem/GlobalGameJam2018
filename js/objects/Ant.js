@@ -4,6 +4,7 @@ function Ant (x, y, game, group, bodies) {
   this.facing = 'left';
   this.group = group;
   this.carriedSeedBody = null;
+  this.carriedBySpider = false;
   this.GameScreen = game.state.states[game.state.current];
 
   this.sprite = game.add.sprite(x, y, 'ant');
@@ -14,13 +15,14 @@ function Ant (x, y, game, group, bodies) {
   this.move_speed = 5;
 
   //	Enable the physics body on this sprite and turn on the visual debugger
-	game.physics.p2.enable(this.sprite);
+	game.physics.p2.enable(this.sprite, true);
   
   //	Clear the shapes and load the 'contra2' polygon from the physicsData JSON file in the cache
   this.body = this.sprite.body;
+  this.body.myGameObject = this;
   this.body.clearShapes();
   //this.body.mass = 30;
-  this.body.addCircle(100, 0, 0, 0);
+  this.body.addCircle(50, 0, 0, 0);
   this.body.kinematic = true;
   bodies.push(this.body);
 
@@ -46,12 +48,13 @@ Ant.prototype.update = function(){
 
   if(this.carriedSeedBody){
     this.carriedSeedBody.x = this.body.x + this.sprite.width/2;
+    this.carriedSeedBody.y = this.body.y + this.sprite.height/2;
   }
 };
 
 Ant.prototype.onContact = function(phaserBody, p2Body) {
   
-      if(phaserBody.sprite.key == 'seed'){
+      if(phaserBody.sprite.key == 'seed' && this.carriedSeedBody == null && !this.carriedBySpider){
         phaserBody.kinematic = true;
         phaserBody.velocity.x = 0;
         phaserBody.velocity.y = 0;
@@ -73,6 +76,7 @@ Ant.prototype.dropSeed = function (){
     this.GameScreen.addEntity(this.GameScreen.Flowers, this.carriedSeedBody.x, this.GameScreen.Flowers.spawnLines[0], null);
     this.carriedSeedBody.sprite.destroy();
     this.carriedSeedBody.destroy();
+    this.GameScreen.removeEntityFromBody(this.carriedSeedBody, this.GameScreen.Seeds);
     this.carriedSeedBody = null;
 
 

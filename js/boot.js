@@ -2,6 +2,7 @@ var game,
     x_size = 1920,
     y_size = 1080,
     toolbarSize = 180,
+    flowerSpawnY = y_size - toolbarSize - 60,
     colour_sets = {
       'orange' : {'yellow':true, 'red':true},
       'green' : {'yellow':true, 'blue':true},

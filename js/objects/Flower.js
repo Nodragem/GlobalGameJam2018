@@ -37,5 +37,5 @@ function Flower(x, y, game, group, bodies, type) {
 }
 
 Flower.prototype.spawnSeed = function(){
-    this.GameScreen.addEntity(this.GameScreen.Seeds, this.x + game.rnd.realInRange(-10, 10), this.y-70);
+    this.GameScreen.addEntity(this.GameScreen.Seeds, this.x + game.rnd.realInRange(-30, 30), this.y-70);
 }
