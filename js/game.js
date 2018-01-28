@@ -37,7 +37,10 @@ var Game = {
         game.load.audio('bee_feedback', 'assets/audio/bee-feedback.mp3');
         game.load.audio('bee_lullaby', 'assets/audio/bee-lullaby.mp3');
         game.load.audio('bee_bg', 'assets/audio/game-underscore.mp3');
-
+        game.load.audio('spider_on', 'assets/audio/boris-approaches.mp3');
+        game.load.audio('ant_death', 'assets/audio/ant-death.mp3');
+        game.load.audio('ant_rustle', 'assets/audio/ant-rustle.mp3');
+        
 
         game.load.spritesheet('stem', 'assets/images/stem-anim.png', 120, 120);
         game.load.spritesheet('yellow-flower', 'assets/images/yellow-flower.png', 120, 120);

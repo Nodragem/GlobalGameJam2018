@@ -1,6 +1,10 @@
 function Spider (x, y, game, group, bodies) {
     this.x = x;
     this.y = y;
+    this.timer = 5;
+    this.sound = game.add.audio('spider_on');
+    //this.sound.play();
+    this.ant_death_sound = game.add.audio('ant_death');
     this.spawnPosition = {};
     this.spawnPosition.x = x;
     this.spawnPosition.y = y;
@@ -23,8 +27,11 @@ function Spider (x, y, game, group, bodies) {
     this.body.clearShapes();
     //this.body.mass = 30;
     this.body.addCircle(40, 0, 0, 0);
+    this.body.x = x;
+    this.body.y = y;
     this.body.kinematic = false;
     this.body.fixedRotation = true;
+    this.body.velocity.y = 0;
     bodies.push(this.body);
   
     //  Check for the spider hitting another object
@@ -33,10 +40,21 @@ function Spider (x, y, game, group, bodies) {
     
 };
   
-Spider.prototype.update = function(){
-    this.y += this.move_speed;
+Spider.prototype.update = function(){    
+    
+    var speed = this.move_speed;
+    if(this.timer > 0){
+        this.timer -= game.time.elapsedMS/1000;
+        speed = 0;
+    }
+
+    this.y += speed;
+    this.body.velocity.y=0;
+    this.body.velocity.x=0;
     this.body.y = this.y;
     this.body.x = this.x;
+
+    //this.body.velocity.y = this.move_speed;
 
     if (this.body.y < this.spawnPosition.y){
       this.move_speed *= -1;
@@ -53,10 +71,14 @@ Spider.prototype.update = function(){
         // destroy the ant:
         this.carriedAntBody.sprite.destroy();
         this.carriedAntBody.destroy();
+        this.carriedAntBody.myGameObject.sound.destroy();
         this.GameScreen.removeEntityFromBody(this.carriedAntBody, this.GameScreen.Ants);
         // destroy the spider
         this.sprite.destroy();
         this.body.destroy();
+        this.sound.stop();
+        this.sound.destroy();
+        this.ant_death_sound.destroy();
         this.GameScreen.removeEntityFromBody(this.body, this.GameScreen.Spiders);
       }
       // this.body.x = 0;
@@ -81,11 +103,12 @@ Spider.prototype.update = function(){
 // };
 
 Spider.prototype.onContactWith = function(phaserBody, p2Body) {
-    console.log('collision');
+    //console.log('collision');
     if(phaserBody.sprite.key == 'ant' && this.carriedAntBody == null){
         if (phaserBody.myGameObject.carriedBySpider == true)
             return;
         console.log('catch a ant');
+        this.ant_death_sound.play();
         phaserBody.kinematic = true;
         phaserBody.velocity.x = 0;
         phaserBody.velocity.y = 0;

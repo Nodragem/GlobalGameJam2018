@@ -1,6 +1,8 @@
 function Ant (x, y, game, group, bodies) {
   this.x = x;
   this.y = y;
+  this.sound = game.add.audio('ant_rustle');
+  this.sound.play();
   this.facing = 'left';
   this.group = group;
   this.carriedSeedBody = null;
