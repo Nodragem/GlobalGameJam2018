@@ -71,12 +71,17 @@ BeePath.prototype.updatePositions = function(){
                 }
                 bee.interp_factor += bee.normed_speed;
                 this.linear_interp(bee, bee.interp_factor, bee.point1, bee.point2);
-
+                if(bee.sprite.x < this.points[bee.interval + 1].x) {
+                    bee.sprite.scale.x = -0.35;
+                } else {
+                    bee.sprite.scale.x = 0.35;
+                }
             }
             else {
+
+
                 bee.sprite.x = this.points[bee.interval + 1].x;
                 bee.sprite.y = this.points[bee.interval + 1].y;
-
             }
             var beepoint = {x: bee.sprite.x, y: bee.sprite.y};
 

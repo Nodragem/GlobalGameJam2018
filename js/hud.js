@@ -7,7 +7,6 @@ function renderHUD(game) {
   var toolBarTop = y_size - toolbarSize;
   abeelity_sound = game.add.audio('abeelity');
 
-console.log(toolBarTop);
   hud_icons.push({'sprite_key':'icon-bee-orange','colour': 'orange'});
   hud_icons.push({'sprite_key':'icon-bee-green', 'colour':'green'});
   hud_icons.push({'sprite_key':'icon-bee-purple','colour': 'purple'});
@@ -23,13 +22,11 @@ console.log(toolBarTop);
 
   gameHUD.add(graphics);
 
-  update_buttons();
 
 }
 
-function update_buttons() {
+function updateHUD() {
   var toolBarTop = y_size - toolbarSize;
-
   gameHUD.removeAll();
   for(var icon_index=0; icon_index<hud_icons.length; icon_index++) {
     var x_pos = (icon_size + (x_icon_spacing * 2))*(icon_index+1);
@@ -48,6 +45,7 @@ function update_buttons() {
     hud_icons[icon_index]['text'] = text;
     hud_icons[icon_index]['bee_count'] = bee_count;
     gameHUD.add(hud_icons[icon_index]['sprite']);
+    gameHUD.add(text);
 
   }
 }

@@ -38,9 +38,10 @@ function Flower(x, y, game, group, bodies, type) {
     emitter.makeParticles('seed');
     emitter.gravity = 200;
     emitter.start(true, 2000, null, 10);
-    anim = this.sprite_stem.animations.play('grow', 20, false);
+    flowerSounds.play();
+    anim = this.sprite_stem.animations.play('grow', 15, false);
     anim.onComplete.add(function() {
-        this.sprite.animations.play('blossom', 30, false);
+        this.sprite.animations.play('blossom', 20, false);
     }, this);
 
 

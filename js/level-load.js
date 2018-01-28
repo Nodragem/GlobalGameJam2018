@@ -3,7 +3,8 @@ var layer;
 var level = 1;
 
 function initLevel(game) {
-  game.load.tilemap('level-'+level, '/assets/maps/level-1.json', null, Phaser.Tilemap.TILED_JSON);
+  game.load.tilemap('level-1', '/assets/maps/level-1.json', null, Phaser.Tilemap.TILED_JSON);
+  game.load.tilemap('level-2', '/assets/maps/level-2.json', null, Phaser.Tilemap.TILED_JSON);
 }
 
 function loadLevel(game) {

@@ -14,6 +14,7 @@ var Game = {
     activeBeePath : null,
     selectedAction : 'yellowBee', 
     background: null,
+    flowerSounds: null,
 
     preload : function() {
         // Here we load all the needed resources for the level.
@@ -21,8 +22,6 @@ var Game = {
         //	Load our physics data exported from PhysicsEditor
   	    game.load.physics('physicsData', 'assets/physics/flower_ph_collider.json');
         game.load.image('hive', '/assets/images/hive_ph.png');
-        game.load.image('bee', '/assets/images/bee_ph.png');
-        game.load.image('spider', '/assets/images/spider_ph.png');
         game.load.image('ant', 'assets/images/ant.png');
         // HUD:
         game.load.image('icon-bee-orange', '/assets/images/icon-bee-orange.png');
@@ -42,7 +41,11 @@ var Game = {
         game.load.audio('ant_rustle', 'assets/audio/ant-rustle.mp3');
         game.load.audio('abeelity', 'assets/audio/abeelity.mp3' );
         game.load.audio('bee-feedback', 'assets/audio/bee-feedback.mp3' );
-        
+        game.load.audio('flower-sound-1', 'assets/audio/flower-bloom-1.mp3');
+
+        game.load.image('orange-bee', '/assets/images/orange-bee.png');
+        game.load.image('purple-bee', '/assets/images/purple-bee.png');
+        game.load.image('green-bee', '/assets/images/green-bee.png');
 
         game.load.spritesheet('stem', 'assets/images/stem-anim.png', 120, 120);
         game.load.spritesheet('yellow-flower', 'assets/images/yellow-flower.png', 120, 120);
@@ -53,6 +56,8 @@ var Game = {
         game.load.spritesheet('purple-flower', 'assets/images/purple-flower.png', 120, 120);
         game.load.spritesheet('white-flower', 'assets/images/white-flower.png', 120, 120);
 
+        game.load.spritesheet('spider', 'assets/images/spider-anim.png', 120, 120);
+
         initLevel(Game);
 
     },
@@ -62,9 +67,10 @@ var Game = {
         bee_feedback = game.add.audio('bee_feedback');
         bee_lullaby = game.add.audio('bee_lullaby');
         bee_bg = game.add.audio('bee_bg');
+        flowerSounds = game.add.audio('flower-sound-1');
         bee_lullaby.loop = true;
         bee_bg.loop = true;
-        game.sound.setDecodedCallback([ 'bee_bg','bee_feedback', 'bee_lullaby' ], this.ready, this);
+        game.sound.setDecodedCallback([ 'flower-sound-1', 'bee_bg','bee_feedback', 'bee_lullaby' ], this.ready, this);
     },
 
     ready: function() {
@@ -89,8 +95,8 @@ var Game = {
         this.Flowers.group = game.add.group();
         //this.Flowers.list.push(new Flower(20, 1080-300, game, this.Flowers.group, this.Flowers.bodies));
         loadLevel(Game);
-
         renderHUD(Game);
+        updateHUD();
         bee_bg.play();
     },
 
@@ -181,6 +187,7 @@ var Game = {
     newLevel: function() {
         level++;
         loadLevel(Game);
+        updateHUD();
     },
 
   removeEntityFromBody : function (entityBody, gameGroup) {
