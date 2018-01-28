@@ -1,9 +1,11 @@
 var hud_icons = [], gameHUD, icon_size = 60,
   x_icon_spacing = 40,y_icon_spacing = 10;
+var abeelity_sound = null;
 
 function renderHUD(game) {
   gameHUD = game.add.group();
   var toolBarTop = y_size - toolbarSize;
+  abeelity_sound = game.add.audio('abeelity');
 
 console.log(toolBarTop);
   hud_icons.push({'sprite_key':'icon-bee-orange','colour': 'orange'});
@@ -66,6 +68,7 @@ function bee_toggle() {
     Game.BeePaths.push(new BeePath(Game.Hives[0]))
     Game.activeBeePath = Game.BeePaths[0];
     Game.activeBeePath.addBee(Game.Bees[0]);
+    abeelity_sound.play();
     active_bee = hud_icons[this.clicked_index]['colour'];
     this.icon.alpha = 0.5;
   } else {

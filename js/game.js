@@ -40,6 +40,8 @@ var Game = {
         game.load.audio('spider_on', 'assets/audio/boris-approaches.mp3');
         game.load.audio('ant_death', 'assets/audio/ant-death.mp3');
         game.load.audio('ant_rustle', 'assets/audio/ant-rustle.mp3');
+        game.load.audio('abeelity', 'assets/audio/abeelity.mp3' );
+        game.load.audio('bee-feedback', 'assets/audio/bee-feedback.mp3' );
         
 
         game.load.spritesheet('stem', 'assets/images/stem-anim.png', 120, 120);

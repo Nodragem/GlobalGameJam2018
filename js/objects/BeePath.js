@@ -2,6 +2,7 @@ function BeePath (origin) {
     // origing needs a x and y and will be the starting points
     this.points = [];
     this.group_paths = game.add.group();
+    this.halting_sound = game.add.audio('bee-feedback');
     // this.points.push({x:origin.x, y:origin.y});
     this.points.push({x:origin.x, y:origin.y, sprite:game.add.sprite(origin.x, origin.y, 'love_bee')});
     this.noise_amp = 5;
@@ -92,6 +93,7 @@ BeePath.prototype.updatePositions = function(){
                 colour_type  = Game.Flowers.list[bodyID].flower_type;
                 if(active_bee && colour_sets[active_bee][colour_type] && this.halt_counter == 0) {
                     this.halted = true;
+                    this.halting_sound.play();
                 }
 
                 if(this.flower_hit==2) {
