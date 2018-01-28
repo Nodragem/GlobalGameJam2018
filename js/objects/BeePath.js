@@ -109,19 +109,20 @@ BeePath.prototype.updatePositions = function(){
             this.halt_counter++;;
             if(this.halt_counter>=100) {
                 this.halted = false;
-                this.flower_hit++;
 
                 // add a particle effect to represent a bee carrying pollen
-                emitter = game.add.emitter(bee.sprite.x + bee.sprite.width/2, bee.sprite.y + bee.sprite.height/2, 80); 
-                emitter.forEach(function(particle) { particle.tint = 0x00ff00;});
-                emitter.minParticleScale = 0.06;
-                emitter.maxParticleScale = 0.3;   
-                emitter.minParticleSpeed = 0.2;
-                emitter.maxParticleSpeed = 1;
-                emitter.makeParticles('seed');
-                emitter.gravity = 0;
-                emitter.start(false, 200, 50, 500);
-
+                if(active_bee && this.flower_hit == 0){
+                    emitter = game.add.emitter(bee.sprite.x + bee.sprite.width/2, bee.sprite.y + bee.sprite.height/2, 80); 
+                    emitter.forEach(function(particle) { particle.tint = 0x00ff00;});
+                    emitter.minParticleScale = 0.06;
+                    emitter.maxParticleScale = 0.3;   
+                    emitter.minParticleSpeed = 0.2;
+                    emitter.maxParticleSpeed = 1;
+                    emitter.makeParticles('seed');
+                    emitter.gravity = 0;
+                    emitter.start(false, 200, 50, 500);
+                }
+                this.flower_hit++;
             }
         }
         // add noise in bees:
@@ -135,6 +136,7 @@ BeePath.prototype.updatePositions = function(){
                 emitter.y = bee.sprite.y + bee.sprite.height/2;
             }
             else{
+                emitter.lifespan = 0.1;
                 emitter.destroy();
             }
         }
