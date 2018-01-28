@@ -38,7 +38,20 @@ function Flower(x, y, game, group, bodies, type) {
     emitter.makeParticles('seed');
     emitter.gravity = 200;
     emitter.start(true, 2000, null, 10);
-    flowerSounds.play();
+    switch(flower_sound_count) {
+        case 0:
+            flowerSoundsA.play();
+            break;
+        case 1:
+            flowerSoundsB.play();
+            break;
+        case 2:
+            flowerSoundsC.play();
+            break;
+    }
+    flower_sound_count++;
+    if(flower_sound_count>flower_sound_max) flower_sound_count = 0;
+
     anim = this.sprite_stem.animations.play('grow', 15, false);
     anim.onComplete.add(function() {
         this.sprite.animations.play('blossom', 20, false);
@@ -50,3 +63,5 @@ function Flower(x, y, game, group, bodies, type) {
 Flower.prototype.spawnSeed = function(active_bee){
     this.GameScreen.addEntity(this.GameScreen.Seeds, this.x + game.rnd.realInRange(-30, 30), this.y-70, active_bee);
 }
+
+var flower_sound_count = 0, flower_sound_max = 3;

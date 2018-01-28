@@ -14,33 +14,47 @@ Preloader.prototype = {
         //this.preloadBar = this.add.sprite(10, 30, 'preloadbar');
         //this.load.setPreloadSprite(this.preloadBar);
         // Here we load all the needed resources for the level.
+        // Here we load all the needed resources for the level.
         game.load.image('background', './assets/images/background.png');
         //	Load our physics data exported from PhysicsEditor
-  	    game.load.physics('physicsData', 'assets/physics/flower_ph_collider.json');
+        game.load.physics('physicsData', 'assets/physics/flower_ph_collider.json');
         game.load.image('hive', '/assets/images/hive_ph.png');
-        game.load.image('bee', '/assets/images/bee_ph.png');
-        game.load.image('spider', '/assets/images/spider_ph.png');
-        game.load.image('ant', 'assets/images/ant.png');
         // HUD:
         game.load.image('icon-bee-orange', '/assets/images/icon-bee-orange.png');
         game.load.image('icon-bee-purple', '/assets/images/icon-bee-purple.png');
         game.load.image('icon-bee-green', '/assets/images/icon-bee-green.png');
         game.load.image('love_bee', '/assets/images/love_bee_ph.png');
-        game.load.image('seed', '/assets/images/seed_ph.png');
         game.load.image('flower', '/assets/images/flower_ph.png');
+
+        game.load.image('seed', '/assets/images/seed_ph.png');
+        game.load.image('green-seed', '/assets/images/green-seed.png');
+        game.load.image('red-seed', '/assets/images/red-seed.png');
+        game.load.image('blue-seed', '/assets/images/blue-seed.png');
+        game.load.image('orange-seed', '/assets/images/orange-seed.png');
+        game.load.image('yellow-seed', '/assets/images/yellow-seed.png');
+        game.load.image('purple-seed', '/assets/images/purple-seed.png');
+
 
         game.load.image('tiles', 'assets/images/blank.png');
 
         game.load.audio('bee_feedback', 'assets/audio/bee-feedback.mp3');
-        game.load.audio('bee_lullaby', 'assets/audio/bee-lullaby.mp3');
         game.load.audio('bee_bg', 'assets/audio/game-underscore.mp3');
         game.load.audio('spider_on', 'assets/audio/boris-approaches.mp3');
         game.load.audio('ant_death', 'assets/audio/ant-death.mp3');
         game.load.audio('ant_rustle', 'assets/audio/ant-rustle.mp3');
         game.load.audio('abeelity', 'assets/audio/abeelity.mp3' );
         game.load.audio('bee-feedback', 'assets/audio/bee-feedback.mp3' );
-        
+        game.load.audio('flower-sound-1', 'assets/audio/flower-bloom-1.mp3');
+        game.load.audio('flower-sound-2', 'assets/audio/flower-bloom-2.mp3');
+        game.load.audio('flower-sound-3', 'assets/audio/flower-bloom-3.mp3');
+        game.load.audio('level-complete', 'assets/audio/level-complete.mp3');
 
+        game.load.image('orange-bee', '/assets/images/orange-bee.png');
+        game.load.image('purple-bee', '/assets/images/purple-bee.png');
+        game.load.image('green-bee', '/assets/images/green-bee.png');
+        game.load.image('toolbar', '/assets/images/toolbar.jpg');
+
+        game.load.spritesheet('ant', 'assets/images/ant-anim.png', 120, 120);
         game.load.spritesheet('stem', 'assets/images/stem-anim.png', 120, 120);
         game.load.spritesheet('yellow-flower', 'assets/images/yellow-flower.png', 120, 120);
         game.load.spritesheet('red-flower', 'assets/images/red-flower.png', 120, 120);
@@ -49,6 +63,8 @@ Preloader.prototype = {
         game.load.spritesheet('orange-flower', 'assets/images/orange-flower.png', 120, 120);
         game.load.spritesheet('purple-flower', 'assets/images/purple-flower.png', 120, 120);
         game.load.spritesheet('white-flower', 'assets/images/white-flower.png', 120, 120);
+
+        game.load.spritesheet('spider', 'assets/images/spider-anim.png', 120, 120);
 
         
         this.load.onLoadStart.add(this.loadStart, this);
@@ -68,6 +84,10 @@ Preloader.prototype = {
         this.text = game.add.text(x_size/2-250, 100, '', { fill: '#ffffff' });
         //this.text.align="center";
         this.text.setText("Game Assets Loading ...");
+        this.bee_lullaby = game.add.audio('bee_lullaby');
+        if(!this.ready) {
+            this.bee_lullaby.play();
+        }
     },
 
     create : function () {
@@ -98,7 +118,10 @@ Preloader.prototype = {
         if(this.ready){
             this.sprite.alpha = 0;
             this.sprite.destroy();
+            this.bee_lullaby.stop();
+
             this.state.start('Game');
+            this.bee_lullaby.destroy();
         }
     }
 };

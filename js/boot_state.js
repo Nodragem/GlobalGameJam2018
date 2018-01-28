@@ -1,7 +1,9 @@
 var BootState = {
 
  preload: function() {
-      this.load.image('menu', './assets/images/menu.jpg');
+   this.load.audio('bee_lullaby', 'assets/audio/bee-lullaby-loop.mp3');
+
+   this.load.image('menu', './assets/images/menu.jpg');
   },
  create: function(){
       this.game.stage.backgroundColor = '#55ff55';

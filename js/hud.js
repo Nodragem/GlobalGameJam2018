@@ -1,5 +1,5 @@
 var hud_icons = [], gameHUD, icon_size = 60,
-  x_icon_spacing = 40,y_icon_spacing = 10;
+  x_icon_spacing = 60,y_icon_spacing = 10;
 var abeelity_sound = null;
 
 function renderHUD(game) {
@@ -11,7 +11,7 @@ function renderHUD(game) {
   hud_icons.push({'sprite_key':'icon-bee-green', 'colour':'green'});
   hud_icons.push({'sprite_key':'icon-bee-purple','colour': 'purple'});
 
-  var graphics = game.make.graphics();
+  /*var graphics = game.make.graphics();
 
   graphics.beginFill(0x000000);
   graphics.moveTo(0,toolBarTop);
@@ -20,7 +20,8 @@ function renderHUD(game) {
   graphics.lineTo(0, y_size);
   graphics.endFill();
 
-  gameHUD.add(graphics);
+  gameHUD.add(graphics);*/
+
 
 
 }
@@ -28,13 +29,16 @@ function renderHUD(game) {
 function updateHUD() {
   var toolBarTop = y_size - toolbarSize;
   gameHUD.removeAll();
+  var tb  = game.add.sprite(0, toolBarTop, 'toolbar');
+  tb.anchor.setTo(0,0);
+  gameHUD.add(tb);
   for(var icon_index=0; icon_index<hud_icons.length; icon_index++) {
     var x_pos = (icon_size + (x_icon_spacing * 2))*(icon_index+1);
     var y_pos = (toolBarTop + y_icon_spacing);
-    var icon  = game.add.sprite(x_pos, y_pos, hud_icons[icon_index]['sprite_key']);
+    var icon  = game.add.sprite(x_pos+55, y_pos, hud_icons[icon_index]['sprite_key']);
     var bee_count = map.properties['bees_'+hud_icons[icon_index]['colour']];
 
-    var text = game.add.text(Math.floor(icon.x + icon.width / 2), y_pos + icon_size + y_icon_spacing + icon_size, '' + bee_count, {fill: '#ffffff'});
+    var text = game.add.text(Math.floor(icon.x + icon.width / 2), y_pos + icon_size + y_icon_spacing + icon_size, '' + bee_count, {fill: '#000000'});
 
     icon.inputEnabled = true;
     icon.events.onInputDown.add(bee_toggle, {'clicked_index': icon_index, 'game': game, 'icon': icon});

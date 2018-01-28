@@ -10,6 +10,9 @@ function Ant (x, y, game, group, bodies) {
   this.GameScreen = game.state.states[game.state.current];
 
   this.sprite = game.add.sprite(x, y, 'ant');
+  this.sprite.animations.add('walk');
+  this.sprite.animations.play('walk', 10, true);
+
   if(this.group){
     this.group.add(this.sprite);
   }
@@ -56,7 +59,7 @@ Ant.prototype.update = function(){
 
 Ant.prototype.onContact = function(phaserBody, p2Body) {
   
-      if(phaserBody.sprite.key == 'seed' && this.carriedSeedBody == null && !this.carriedBySpider){
+      if(phaserBody.sprite.key.search('seed') && this.carriedSeedBody == null && !this.carriedBySpider){
         phaserBody.kinematic = true;
         phaserBody.velocity.x = 0;
         phaserBody.velocity.y = 0;

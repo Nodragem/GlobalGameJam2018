@@ -14,10 +14,12 @@ var Game = {
     activeBeePath : null,
     selectedAction : 'yellowBee', 
     background: null,
-    flowerSounds: null,
+    flowerSoundsA: null,
+    flowerSoundsB: null,
+    flowerSoundsC: null,
 
     preload : function() {
-        
+
 
         initLevel(Game);
 
@@ -27,10 +29,11 @@ var Game = {
         this.game.stage.backgroundColor = '#000000';
         //this.ready();
         bee_feedback = game.add.audio('bee_feedback');
-        bee_lullaby = game.add.audio('bee_lullaby');
+        level_up = game.add.audio('level-complete');
         bee_bg = game.add.audio('bee_bg');
-        flowerSounds = game.add.audio('flower-sound-1');
-        bee_lullaby.loop = true;
+        flowerSoundsA = game.add.audio('flower-sound-1');
+        flowerSoundsB = game.add.audio('flower-sound-2');
+        flowerSoundsC = game.add.audio('flower-sound-3');
         bee_bg.loop = true;
         game.sound.setDecodedCallback([ 'flower-sound-1', 'bee_bg','bee_feedback', 'bee_lullaby' ], this.ready, this);
     },
@@ -47,7 +50,7 @@ var Game = {
         //  Enables all kind of input actions on this this.background (click, etc)
         this.background.inputEnabled = true;
         this.background.events.onInputUp.add(this.onBackgroundClick, this);
-        game.physics.p2.enable(this.background, true);
+        game.physics.p2.enable(this.background);
         this.background.body.clearShapes();
         this.background.body.addRectangle(x_size, toolbarSize, 0, y_size-toolbarSize/2-60, 0); // FIXME: should be using something like Flowers.spawnLines
         this.background.body.kinematic = true;
@@ -148,6 +151,7 @@ var Game = {
 
     newLevel: function() {
         level++;
+        level_up.play();
         loadLevel(Game);
         updateHUD();
     },

@@ -3,48 +3,52 @@ function Spider (x, y, game, group, bodies) {
     this.y = y;
     this.timer = 5;
     this.sound = game.add.audio('spider_on');
-    this.sound.play();
     this.ant_death_sound = game.add.audio('ant_death');
     this.spawnPosition = {};
     this.spawnPosition.x = x;
     this.spawnPosition.y = y;
     this.group = group;
     this.carriedAntBody = null;
+  this.ready = false;
     this.GameScreen = game.state.states[game.state.current];
-  
-    this.sprite = game.add.sprite(x, y, 'spider');
-    this.sprite.animations.add('walk');
-    this.sprite.animations.play('walk', 10, true);
 
-    if(this.group){
-      this.group.add(this.sprite);
+  window.setTimeout(function(spider_this) {
+    spider_this.sound.play();
+    spider_this.sprite = game.add.sprite(x, y, 'spider');
+    spider_this.sprite.animations.add('walk');
+    spider_this.sprite.animations.play('walk', 10, true);
+
+    if(spider_this.group){
+      spider_this.group.add(spider_this.sprite);
     }
-  
-    this.move_speed = 2;
-  
+
+    spider_this.move_speed = 2;
+
     //	Enable the physics body on this sprite and turn on the visual debugger
-    game.physics.p2.enable(this.sprite);
+    game.physics.p2.enable(spider_this.sprite);
     
     //	Clear the shapes and load the 'contra2' polygon from the physicsData JSON file in the cache
-    this.body = this.sprite.body;
-    this.body.clearShapes();
+    spider_this.body = spider_this.sprite.body;
+    spider_this.body.clearShapes();
     //this.body.mass = 30;
-    this.body.addCircle(40, 0, 0, 0);
-    this.body.x = x;
-    this.body.y = y;
-    this.body.kinematic = false;
-    this.body.fixedRotation = true;
-    this.body.velocity.y = 0;
-    bodies.push(this.body);
+    spider_this.body.addCircle(40, 0, 0, 0);
+    spider_this.body.x = x;
+    spider_this.body.y = y;
+    spider_this.body.kinematic = false;
+    spider_this.body.fixedRotation = true;
+    spider_this.body.velocity.y = 0;
+    bodies.push(spider_this.body);
   
     //  Check for the spider hitting another object
-    this.body.onBeginContact.add(this.onContactWith, this);
-  
+    spider_this.body.onBeginContact.add(spider_this.onContactWith, spider_this);
+    spider_this.ready = true;
+  }, (1000*Math.floor(Math.random() * Math.floor(6)))+3000, this);
+
     
 };
   
 Spider.prototype.update = function(){
-
+if(this.ready) {
     var speed = this.move_speed;
     if(this.timer > 0){
         this.timer -= game.time.elapsedMS/1000;
@@ -97,6 +101,7 @@ Spider.prototype.update = function(){
       this.carriedAntBody.x = this.body.x// + this.sprite.height/2;
 
     }
+  }
   };
   
 

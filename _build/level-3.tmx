@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.0" orientation="orthogonal" renderorder="right-down" width="32" height="15" tilewidth="60" tileheight="60" infinite="0" nextobjectid="1">
+ <properties>
+  <property name="ants" value="3"/>
+  <property name="bees_green" value="1"/>
+  <property name="bees_orange" value="1"/>
+  <property name="bees_purple" value="2"/>
+  <property name="bees_soldier" value="10"/>
+ </properties>
+ <tileset firstgid="1" name="level-objects" tilewidth="60" tileheight="60" spacing="1" margin="1" tilecount="16" columns="4">
+  <image source="tilemap.png" width="245" height="245"/>
+  <tile id="0" type="flower">
+   <properties>
+    <property name="colour" value="white"/>
+    <property name="type" value="flower"/>
+   </properties>
+  </tile>
+  <tile id="1" type="flower">
+   <properties>
+    <property name="colour" value="red"/>
+    <property name="type" value="flower"/>
+   </properties>
+  </tile>
+  <tile id="2" type="flower">
+   <properties>
+    <property name="colour" value="yellow"/>
+    <property name="type" value="flower"/>
+   </properties>
+  </tile>
+  <tile id="3" type="flower">
+   <properties>
+    <property name="colour" value="blue"/>
+    <property name="type" value="flower"/>
+   </properties>
+  </tile>
+  <tile id="4" type="seed">
+   <properties>
+    <property name="colour" value="orange"/>
+    <property name="type" value="seed"/>
+   </properties>
+  </tile>
+  <tile id="5" type="seed">
+   <properties>
+    <property name="colour" value="green"/>
+    <property name="type" value="seed"/>
+   </properties>
+  </tile>
+  <tile id="6" type="seed">
+   <properties>
+    <property name="colour" value="purple"/>
+    <property name="type" value="seed"/>
+   </properties>
+  </tile>
+  <tile id="7" type="wasp">
+   <properties>
+    <property name="type" value="wasp"/>
+   </properties>
+  </tile>
+  <tile id="8" type="spider">
+   <properties>
+    <property name="type" value="spider"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="type" value="hive"/>
+   </properties>
+  </tile>
+ </tileset>
+ <imagelayer name="background">
+  <image source="../assets/images/background.png" width="1920" height="900"/>
+ </imagelayer>
+ <layer name="world" width="32" height="15">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,1,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>
