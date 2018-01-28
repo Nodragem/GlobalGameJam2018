@@ -53,7 +53,7 @@ Ant.prototype.update = function(){
 
   if(this.carriedSeedBody){
     this.carriedSeedBody.x = this.body.x + this.sprite.width/2;
-    this.carriedSeedBody.y = this.body.y + this.sprite.height/2;
+    this.carriedSeedBody.y = (this.body.y + this.sprite.height/2) - 50;
   }
 };
 

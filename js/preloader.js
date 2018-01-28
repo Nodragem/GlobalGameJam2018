@@ -73,7 +73,9 @@ Preloader.prototype = {
     },
     
     loadStart : function() {
-        // Add a sprite to your game, here the sprite will be the game's logo
+        if(!this.ready) {
+
+            // Add a sprite to your game, here the sprite will be the game's logo
         // Parameters are : X , Y , image name (see above) 
         this.sprite = this.add.sprite(0, 0, 'menu');
         
@@ -85,7 +87,6 @@ Preloader.prototype = {
         //this.text.align="center";
         this.text.setText("Game Assets Loading ...");
         this.bee_lullaby = game.add.audio('bee_lullaby');
-        if(!this.ready) {
             this.bee_lullaby.play();
         }
     },
