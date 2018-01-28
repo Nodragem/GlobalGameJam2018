@@ -3,7 +3,7 @@ function Spider (x, y, game, group, bodies) {
     this.y = y;
     this.timer = 5;
     this.sound = game.add.audio('spider_on');
-    //this.sound.play();
+    this.sound.play();
     this.ant_death_sound = game.add.audio('ant_death');
     this.spawnPosition = {};
     this.spawnPosition.x = x;
