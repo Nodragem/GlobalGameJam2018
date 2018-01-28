@@ -2,8 +2,8 @@
 <map version="1.0" tiledversion="1.1.0" orientation="orthogonal" renderorder="right-down" width="32" height="15" tilewidth="60" tileheight="60" infinite="0" nextobjectid="1">
  <properties>
   <property name="ants" value="2"/>
-  <property name="bees_green" value="0"/>
-  <property name="bees_orange" value="1"/>
+  <property name="bees_green" value="1"/>
+  <property name="bees_orange" value="0"/>
   <property name="bees_purple" value="0"/>
   <property name="bees_soldier" value="10"/>
  </properties>

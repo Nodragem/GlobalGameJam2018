@@ -13,14 +13,17 @@ function Spider (x, y, game, group, bodies) {
     this.GameScreen = game.state.states[game.state.current];
   
     this.sprite = game.add.sprite(x, y, 'spider');
+    this.sprite.animations.add('walk');
+    this.sprite.animations.play('walk', 10, true);
+
     if(this.group){
       this.group.add(this.sprite);
     }
   
-    this.move_speed = 5;
+    this.move_speed = 2;
   
     //	Enable the physics body on this sprite and turn on the visual debugger
-    game.physics.p2.enable(this.sprite, true);
+    game.physics.p2.enable(this.sprite);
     
     //	Clear the shapes and load the 'contra2' polygon from the physicsData JSON file in the cache
     this.body = this.sprite.body;
@@ -40,8 +43,8 @@ function Spider (x, y, game, group, bodies) {
     
 };
   
-Spider.prototype.update = function(){    
-    
+Spider.prototype.update = function(){
+
     var speed = this.move_speed;
     if(this.timer > 0){
         this.timer -= game.time.elapsedMS/1000;
@@ -103,13 +106,12 @@ Spider.prototype.update = function(){
 // };
 
 Spider.prototype.onContactWith = function(phaserBody, p2Body) {
-    //console.log('collision');
     if(phaserBody.sprite.key == 'ant' && this.carriedAntBody == null){
         if (phaserBody.myGameObject.carriedBySpider == true)
             return;
-        console.log('catch a ant');
-        this.ant_death_sound.play();
-        phaserBody.kinematic = true;
+      this.ant_death_sound.play();
+
+      phaserBody.kinematic = true;
         phaserBody.velocity.x = 0;
         phaserBody.velocity.y = 0;
         phaserBody.fixedRotation = true;

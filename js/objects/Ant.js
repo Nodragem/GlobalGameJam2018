@@ -82,7 +82,9 @@ Ant.prototype.dropSeed = function (){
     this.GameScreen.removeEntityFromBody(this.carriedSeedBody, this.GameScreen.Seeds);
     this.carriedSeedBody = null;
 
-    Game.newLevel();
+    window.setTimeout(function() {
+      Game.newLevel();
+    },2500);
 
     //this.carriedSeedBody.y = this.body.y + this.sprite.width;
   }

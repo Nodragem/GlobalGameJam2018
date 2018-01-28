@@ -14,6 +14,7 @@ var Game = {
     activeBeePath : null,
     selectedAction : 'yellowBee', 
     background: null,
+    flowerSounds: null,
 
     preload : function() {
         
@@ -28,9 +29,10 @@ var Game = {
         bee_feedback = game.add.audio('bee_feedback');
         bee_lullaby = game.add.audio('bee_lullaby');
         bee_bg = game.add.audio('bee_bg');
+        flowerSounds = game.add.audio('flower-sound-1');
         bee_lullaby.loop = true;
         bee_bg.loop = true;
-        game.sound.setDecodedCallback([ 'bee_bg','bee_feedback', 'bee_lullaby' ], this.ready, this);
+        game.sound.setDecodedCallback([ 'flower-sound-1', 'bee_bg','bee_feedback', 'bee_lullaby' ], this.ready, this);
     },
 
     ready: function() {
@@ -55,8 +57,8 @@ var Game = {
         this.Flowers.group = game.add.group();
         //this.Flowers.list.push(new Flower(20, 1080-300, game, this.Flowers.group, this.Flowers.bodies));
         loadLevel(Game);
-
         renderHUD(Game);
+        updateHUD();
         bee_bg.play();
     },
 
@@ -147,6 +149,7 @@ var Game = {
     newLevel: function() {
         level++;
         loadLevel(Game);
+        updateHUD();
     },
 
   removeEntityFromBody : function (entityBody, gameGroup) {
