@@ -5,7 +5,7 @@ function renderHUD(game, map) {
   var toolBarTop = y_size - toolbarSize;
 
   var icon_size = 60,
-  x_icon_spacing = 40,y_icon_spacing = 10;
+    x_icon_spacing = 40,y_icon_spacing = 10;
 
 
   hud_icons.push({'sprite_key':'icon-bee-orange','colour': 'orange'});
@@ -32,7 +32,7 @@ function renderHUD(game, map) {
     var text = game.add.text(Math.floor(icon.x + icon.width / 2), y_pos + icon_size + y_icon_spacing + icon_size, '' + bee_count, {fill: '#ffffff'});
 
     icon.inputEnabled = true;
-    icon.events.onInputDown.add(bee_activated, {'clicked_index': icon_index, 'game': game});
+    icon.events.onInputDown.add(bee_toggle, {'clicked_index': icon_index, 'game': game, 'icon': icon});
     icon.events.onInputOver.add(icon_over, {'clicked_index': icon_index, 'icon': icon});
     icon.events.onInputOut.add(icon_out, {'clicked_index': icon_index, 'icon': icon});
 
@@ -45,28 +45,47 @@ function renderHUD(game, map) {
 
 
 }
-function bee_activated() {
-  var text = hud_icons[this.clicked_index]['text'],
-  c = hud_icons[this.clicked_index]['bee_count'];
-  if(c>0) {
-    c--;
+function bee_toggle() {
+  if(active_bee==false) {
+    var text = hud_icons[this.clicked_index]['text'],
+      c = hud_icons[this.clicked_index]['bee_count'];
+    if (c > 0) {
+      c--;
+      hud_icons[this.clicked_index]['bee_count'] = c;
+      text.text = c;
+    }
+
+    this.game.BeePaths = [];
+    this.game.Bees = [];
+    this.game.Bees.push(new Bee(this.game.Hives[0].x, this.game.Hives[0].y, hud_icons[this.clicked_index]['colour']));
+    this.game.BeePaths.push(new BeePath(this.game.Hives[0]))
+    this.game.activeBeePath = this.game.BeePaths[0];
+    this.game.activeBeePath.addBee(this.game.Bees[0]);
+    active_bee = hud_icons[this.clicked_index]['colour'];
+    this.icon.alpha = 0.5;
+  } else {
+    active_bee = false;
+    this.icon.alpha = 1;
+    var text = hud_icons[this.clicked_index]['text'],
+    c = hud_icons[this.clicked_index]['bee_count'];
+    c++;
     hud_icons[this.clicked_index]['bee_count'] = c;
     text.text = c;
+    this.game.activeBeePath.clearPaths();
+    this.game.BeePaths = [];
+    this.game.Bees = [];
+
   }
-
-  this.game.BeePaths = [];
-  this.game.Bees.push(new Bee(this.game.Hives[0].x, this.game.Hives[0].y));
-  this.game.BeePaths.push(new BeePath(this.game.Hives[0]))
-  this.game.activeBeePath = this.game.BeePaths[0];
-  this.game.activeBeePath.addBee(this.game.Bees[0]);
 }
 
-function icon_over(icon) {
-  if(hud_icons[this.clicked_index]['bee_count']>0) {
-  this.icon.alpha = 0.5;
-}
+function icon_over() {
+  if(hud_icons[this.clicked_index]['bee_count']>0 && active_bee == false) {
+    this.icon.alpha = 0.5;
+  }
 }
 
-function icon_out(icon) {
-  this.icon.alpha = 1;
+function icon_out() {
+  if(active_bee==false) {
+    this.icon.alpha = 1;
+  }
 }

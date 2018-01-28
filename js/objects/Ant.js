@@ -14,7 +14,7 @@ function Ant (x, y, game, group, bodies) {
   this.move_speed = 5;
 
   //	Enable the physics body on this sprite and turn on the visual debugger
-	game.physics.p2.enable(this.sprite, true);
+	game.physics.p2.enable(this.sprite);
   
   //	Clear the shapes and load the 'contra2' polygon from the physicsData JSON file in the cache
   this.body = this.sprite.body;

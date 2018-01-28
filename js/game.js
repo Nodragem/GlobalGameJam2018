@@ -93,7 +93,6 @@ var Game = {
         }
 
         renderHUD(Game, map);
-        this.Flowers.list[0].spawnSeed();
 
 
 
@@ -119,27 +118,36 @@ var Game = {
         var is_flower = !(bodies.length === 0);
 
         if(is_flower) {
-            flower_hits++;
-            if (flower_hits == 2) {
-                // extract the ID:
-                var bodyID = null;
-                for (id in this.Flowers.bodies) {
-                    if (bodies[0].parent === this.Flowers.bodies[id]) {
-                        bodyID = id;
-                        break;
-                    }
+
+        }
+
+        if(is_flower) {
+            var bodyID = null;
+            for (id in this.Flowers.bodies) {
+                if (bodies[0].parent === this.Flowers.bodies[id]) {
+                    bodyID = id;
+                    break;
                 }
-                // Make the active Bee Path add a point and deactivated it
-                if (this.activeBeePath != null) {
-                    this.activeBeePath.addPoint(pointer.worldX, pointer.worldY, true);
-                    this.activeBeePath.setReady(true);
-                    this.activeBeePath = null;
-                    flower_hits = 0;
+            }
+            colour_type  = this.Flowers.list[bodyID].flower_type;
+            if(colour_sets[active_bee][colour_type]) {
+                flower_hits++;
+
+                if (flower_hits == 2) {
+                    // extract the ID:
+
+                    // Make the active Bee Path add a point and deactivated it
+                    if (this.activeBeePath != null) {
+                        this.activeBeePath.addPoint(pointer.worldX, pointer.worldY);
+                        this.activeBeePath.setReady(true);
+                        this.activeBeePath = null;
+                        flower_hits = 0;
+                    }
                 }
             }
         }
         if(this.activeBeePath != null) {
-            this.activeBeePath.addPoint(pointer.worldX, pointer.worldY, false);
+            this.activeBeePath.addPoint(pointer.worldX, pointer.worldY);
         }
 
         // Detect click on the Ants:
@@ -159,8 +167,8 @@ var Game = {
 
     endGame: function () {
         
-                // Change the state back to Game.
-                this.state.start('Game_Over');
+        // Change the state back to Game.
+        this.state.start('Game_Over');
         
     },
 
