@@ -1,8 +1,10 @@
-function Seed(x, y, game, group, bodies){
+function Seed(x, y, game, group, bodies, type){
     this.x = x;
     this.y = y;
     this.life = 100;
     this.state = 'rolling'; // can be 'rolling' (on the ground) or 'carried' (by an ant)
+
+    this.type = type;
 
     this.group = group;  
     this.sprite = game.add.sprite(x, y, 'seed');
@@ -18,5 +20,6 @@ function Seed(x, y, game, group, bodies){
     this.body.clearShapes();
     //this.body.mass = 30;
     this.body.addCircle(10, 0, 0, 0);
+    this.body.mygameobject = this;
     bodies.push(this.body);
 }

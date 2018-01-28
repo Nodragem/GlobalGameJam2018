@@ -1,13 +1,11 @@
-var hud_icons = [];
+var hud_icons = [], gameHUD, icon_size = 60,
+  x_icon_spacing = 40,y_icon_spacing = 10;
 
-function renderHUD(game, map) {
-  var gameHUD = game.add.group();
+function renderHUD(game) {
+  gameHUD = game.add.group();
   var toolBarTop = y_size - toolbarSize;
 
-  var icon_size = 60,
-    x_icon_spacing = 40,y_icon_spacing = 10;
-
-
+console.log(toolBarTop);
   hud_icons.push({'sprite_key':'icon-bee-orange','colour': 'orange'});
   hud_icons.push({'sprite_key':'icon-bee-green', 'colour':'green'});
   hud_icons.push({'sprite_key':'icon-bee-purple','colour': 'purple'});
@@ -23,6 +21,14 @@ function renderHUD(game, map) {
 
   gameHUD.add(graphics);
 
+  update_buttons();
+
+}
+
+function update_buttons() {
+  var toolBarTop = y_size - toolbarSize;
+
+  gameHUD.removeAll();
   for(var icon_index=0; icon_index<hud_icons.length; icon_index++) {
     var x_pos = (icon_size + (x_icon_spacing * 2))*(icon_index+1);
     var y_pos = (toolBarTop + y_icon_spacing);
@@ -42,9 +48,8 @@ function renderHUD(game, map) {
     gameHUD.add(hud_icons[icon_index]['sprite']);
 
   }
-
-
 }
+
 function bee_toggle() {
   if(active_bee==false) {
     var text = hud_icons[this.clicked_index]['text'],
@@ -55,12 +60,12 @@ function bee_toggle() {
       text.text = c;
     }
 
-    this.game.BeePaths = [];
-    this.game.Bees = [];
-    this.game.Bees.push(new Bee(this.game.Hives[0].x, this.game.Hives[0].y, hud_icons[this.clicked_index]['colour']));
-    this.game.BeePaths.push(new BeePath(this.game.Hives[0]))
-    this.game.activeBeePath = this.game.BeePaths[0];
-    this.game.activeBeePath.addBee(this.game.Bees[0]);
+    Game.BeePaths = [];
+    Game.Bees = [];
+    Game.Bees.push(new Bee(Game.Hives[0].x, Game.Hives[0].y, hud_icons[this.clicked_index]['colour']));
+    Game.BeePaths.push(new BeePath(Game.Hives[0]))
+    Game.activeBeePath = Game.BeePaths[0];
+    Game.activeBeePath.addBee(Game.Bees[0]);
     active_bee = hud_icons[this.clicked_index]['colour'];
     this.icon.alpha = 0.5;
   } else {
@@ -71,9 +76,9 @@ function bee_toggle() {
     c++;
     hud_icons[this.clicked_index]['bee_count'] = c;
     text.text = c;
-    this.game.activeBeePath.clearPaths();
-    this.game.BeePaths = [];
-    this.game.Bees = [];
+    Game.activeBeePath.clearPaths();
+    Game.BeePaths = [];
+    Game.Bees = [];
 
   }
 }

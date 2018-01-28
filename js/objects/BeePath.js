@@ -95,7 +95,7 @@ BeePath.prototype.updatePositions = function(){
                 }
 
                 if(this.flower_hit==2) {
-                    Game.Flowers.list[bodyID].spawnSeed();
+                    Game.Flowers.list[bodyID].spawnSeed(active_bee);
                     bee.sprite.destroy();
                     bee = null;
                     active_bee = false;

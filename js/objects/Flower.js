@@ -6,11 +6,15 @@ function Flower(x, y, game, group, bodies, type) {
     this.group = group;
     this.GameScreen = game.state.states[game.state.current];
 
-    this.sprite = game.add.sprite(x, y, 'yellow-flower');
-    this.sprite_stem = game.add.sprite(x, y, 'yellow-flower');
+    this.sprite = game.add.sprite(x, y, type+'-flower');
+    this.sprite.animations.add('blossom');
+
+    this.sprite_stem = game.add.sprite(x, y, 'stem');
+    this.sprite_stem.animations.add('grow');
+    this.sprite_stem.frame = 0;
+
     this.sprite.anchor.setTo(0.5);
     this.sprite_stem.anchor.setTo(0.5, 0);
-    this.sprite_stem.frame = 1;
     this.flower_type = type;
     if(group){
         group.add(this.sprite_stem);
@@ -34,8 +38,14 @@ function Flower(x, y, game, group, bodies, type) {
     emitter.makeParticles('seed');
     emitter.gravity = 200;
     emitter.start(true, 2000, null, 10);
+    anim = this.sprite_stem.animations.play('grow', 20, false);
+    anim.onComplete.add(function() {
+        this.sprite.animations.play('blossom', 30, false);
+    }, this);
+
+
 }
 
-Flower.prototype.spawnSeed = function(){
-    this.GameScreen.addEntity(this.GameScreen.Seeds, this.x + game.rnd.realInRange(-30, 30), this.y-70);
+Flower.prototype.spawnSeed = function(active_bee){
+    this.GameScreen.addEntity(this.GameScreen.Seeds, this.x + game.rnd.realInRange(-30, 30), this.y-70, active_bee);
 }

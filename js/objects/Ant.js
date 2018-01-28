@@ -15,7 +15,7 @@ function Ant (x, y, game, group, bodies) {
   this.move_speed = 5;
 
   //	Enable the physics body on this sprite and turn on the visual debugger
-	game.physics.p2.enable(this.sprite, true);
+	game.physics.p2.enable(this.sprite);
   
   //	Clear the shapes and load the 'contra2' polygon from the physicsData JSON file in the cache
   this.body = this.sprite.body;
@@ -73,12 +73,14 @@ Ant.prototype.dropSeed = function (){
     this.carriedSeedBody.velocity.x = 0;
     this.carriedSeedBody.velocity.y = 2;
     this.carriedSeedBody.fixedRotation = false;
-    this.GameScreen.addEntity(this.GameScreen.Flowers, this.carriedSeedBody.x, this.GameScreen.Flowers.spawnLines[0], null);
+    var colour = this.carriedSeedBody.mygameobject.type;
+    this.GameScreen.addEntity(this.GameScreen.Flowers, this.carriedSeedBody.x, this.GameScreen.Flowers.spawnLines[0], colour);
     this.carriedSeedBody.sprite.destroy();
     this.carriedSeedBody.destroy();
     this.GameScreen.removeEntityFromBody(this.carriedSeedBody, this.GameScreen.Seeds);
     this.carriedSeedBody = null;
 
+    Game.newLevel();
 
     //this.carriedSeedBody.y = this.body.y + this.sprite.width;
   }
