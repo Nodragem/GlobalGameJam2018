@@ -17,7 +17,6 @@ var Game = {
 
     preload : function() {
         // Here we load all the needed resources for the level.
-        // In our case, that's just two squares - one for the snake body and one for the apple.
         game.load.image('background', './assets/images/background.png');
         //	Load our physics data exported from PhysicsEditor
   	    game.load.physics('physicsData', 'assets/physics/flower_ph_collider.json');
