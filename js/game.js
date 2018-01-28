@@ -32,12 +32,22 @@ var Game = {
         game.load.image('tiles', 'assets/images/blank.png');
         game.load.image('ant', 'assets/images/ant.png');
 
+        game.load.audio('bee_feedback', 'assets/audio/bee-feedback.mp3');
+        game.load.audio('bee_lullaby', 'assets/audio/bee-lullaby.mp3');
+
+
         game.load.spritesheet('yellow-flower', 'assets/images/yellow-flower.png', 120, 120);
 
 
     },
 
     create : function() {
+        bee_feedback = game.add.audio('bee_feedback');
+        bee_lullaby = game.add.audio('bee_lullaby');
+        game.sound.setDecodedCallback([ 'bee_feedback', 'bee_lullaby' ], this.ready, this);
+    },
+
+    ready: function() {
         //	Enable p2 physics for Click Detection:
         game.physics.startSystem(Phaser.Physics.P2JS);
         game.physics.p2.gravity.y = 300;
@@ -47,7 +57,7 @@ var Game = {
         this.background = game.add.sprite(game.world.centerX, 0, 'background');
 
         //  Enables all kind of input actions on this this.background (click, etc)
-        this.background.inputEnabled = true;    
+        this.background.inputEnabled = true;
         this.background.events.onInputUp.add(this.onBackgroundClick, this);
         game.physics.p2.enable(this.background, true);
         this.background.body.clearShapes();
@@ -93,10 +103,7 @@ var Game = {
         }
 
         renderHUD(Game, map);
-
-
-
-
+        bee_lullaby.play();
     },
 
     update: function() {
